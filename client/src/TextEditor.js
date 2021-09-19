@@ -31,6 +31,6 @@ export default function TextEditor() {
     //we have to clean all the old toobars.
     
     return (
-        <div id = "container" ref = {wrapRef}></div>
+        <div className = "container" ref = {wrapRef}></div>
     )
 }
