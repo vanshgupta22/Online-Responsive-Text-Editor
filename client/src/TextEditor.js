@@ -2,6 +2,7 @@ import React , {useEffect , useRef , useCallback , useState} from 'react'
 import Quill  from 'quill'
 import "quill/dist/quill.snow.css"
 import {io} from 'socket.io-client';
+import {useParams} from "react-router-dom";
 
 
 const TOOLBAR_OPTIONS = [
@@ -17,8 +18,10 @@ const TOOLBAR_OPTIONS = [
 ]
 
 export default function TextEditor() {
+    const {id : documentId} = useParams(); //rename id to documentId and use useParams
     const [socket , setSocket] = useState();
     const [quill , setQuill] = useState();
+
 
     useEffect(() => {
         const s = io("http://localhost:5000");//connects with server
@@ -29,6 +32,18 @@ export default function TextEditor() {
             s.disconnect()
         }
     },[])
+
+    useEffect(() =>{
+        if(socket == null || quill == null)return;
+
+        socket.once("load-document" , document =>{
+            quill.setContents(document);
+            quill.enable(); // means that document is loaded and we can edit it now
+        }) // listen only once to load the document from server
+
+        socket.emit("get-document" , documentId);
+
+    } , [socket , quill , documentId])
 
     useEffect(() => {//for transmitting text changes to all instances
 
@@ -83,6 +98,9 @@ export default function TextEditor() {
         //     // if we don't do this then the old toolbars will persist
             
         // }
+
+        q.disable();
+        q.setText('Loading the document ..');
         setQuill(q);
 
     } , [])

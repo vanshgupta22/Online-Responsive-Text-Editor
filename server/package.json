@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "devStart": "nodemon server.js",
-    "client" : " npm start --prefix ../client ",
-    "start" : "concurrently \"npm run devStart\" \"npm run client\" " ,
+    "client": " npm start --prefix ../client ",
+    "start": "concurrently \"npm run devStart\" \"npm run client\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "concurrently": "^6.3.0",
+    "mongoose": "^6.0.11",
     "nodemon": "^2.0.12",
     "socket.io": "^4.2.0"
   }
