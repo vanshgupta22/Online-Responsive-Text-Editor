@@ -30,6 +30,21 @@ export default function TextEditor() {
         }
     },[])
 
+    useEffect(() => {//for transmitting text changes to all instances
+
+        if(socket == null || quill == null)return;
+        
+        const handler = (delta) =>{
+            quill.updateContents(delta)
+        };
+
+        socket.on('receive-changes', handler );
+
+        return() =>{
+            socket.off('receive-changes' , handler);
+        }
+    } , [socket , quill])
+
     useEffect(() => {//for text changes
 
         if(socket == null || quill == null)return;

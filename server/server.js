@@ -8,6 +8,6 @@ const io = require("socket.io")(5000 , {
 //io.on listens to whenever client connects with server , a socket is created
 io.on("connection" , socket => {
     socket.on("send-changes" , delta => {
-        console.log(delta)
+        socket.broadcast.emit("receive-changes" , delta);//sends to all except itself that there are changes
     })
 })
